@@ -57,9 +57,9 @@ class Helu
   def failedTransaction(transaction)
     produt_id = transaction.payment.productIdentifier
 
-    if (transaction.error.code != SKErrorPaymentCancelled)
+    if transaction.error && (transaction.error.code != SKErrorPaymentCancelled)
       finishTransaction(transaction, wasSuccessful:false)
-    elsif transaction.error.code == SKErrorPaymentCancelled
+    elsif transaction.error && transaction.error.code == SKErrorPaymentCancelled
       @fail.call(transaction)
     else
       SKPaymentQueue.defaultQueue.finishTransaction(transaction)
